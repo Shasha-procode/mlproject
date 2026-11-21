@@ -1,5 +1,6 @@
 import os
 import sys
+from src.components.model_trainer import ModelTrainer
 from src.exception import CustomException
 from src.logger import logging  
 import pandas as pd
@@ -49,7 +50,12 @@ class DataIngestion:
 
 if __name__ == "__main__":
     obj = DataIngestion()
-    train_data,test_data = obj.initiate_data_ingestion()
+    train_data, test_data = obj.initiate_data_ingestion()
 
+    # 1. Transform the data into NumPy arrays first
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
+
+    # 2. Pass the arrays (not the file paths) to the model trainer
+    model_trainer = ModelTrainer()
+    print(model_trainer.initiate_model_trainer(train_arr, test_arr))
